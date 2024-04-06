@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<local:BaseContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Pokedex.MAUI.Views"
+             xmlns:converter="clr-namespace:Pokedex.MAUI.Converters"
+             xmlns:viewModels="clr-namespace:Pokedex.Core.ViewModels;assembly=Pokedex.Core"
+             x:Class="Pokedex.MAUI.Views.CardView">
+    <Grid Margin="0,20,0,20">
+        <Grid x:Name="FrontCard" IsVisible="Hidden">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" NumberOfTapsRequired="1"/>
+            </Grid.GestureRecognizers>
+            <Border Stroke="{Binding Specie.color.name, Converter={converter:ColorConverter}}" 
+                     StrokeThickness="4" StrokeShape="RoundRectangle 20" 
+                     HeightRequest="420" WidthRequest="300">
+
+                <Grid Margin="12" >
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <!--ARRIBA-->
+                    <Grid Grid.Row="0">
+                        <Label Text="{Binding Pokemon.id, StringFormat='#{0}'}" FontSize="20" 
+                    HorizontalOptions="Start" VerticalOptions="Center"/>
+                        <Rectangle Fill="{Binding Specie.color.name, Converter={converter:ColorConverter}}" WidthRequest="30" HeightRequest="30" 
+                        HorizontalOptions="End" VerticalOptions="Center" RadiusX="20" RadiusY="20"/>
+                    </Grid>
+                    <!--IMAGEN-->
+                    <Grid Grid.Row="1" VerticalOptions="Center" >
+                        <Rectangle WidthRequest="200" HeightRequest="200" 
+                        RadiusX="500" RadiusY="500" Background="Transparent">
+                            <Rectangle.Fill>
+                                <!-- StartPoint defaults to (0,0) -->
+                                <LinearGradientBrush EndPoint="0,1">
+                                    <GradientStop Color="Silver"
+                                       Offset="-1" />
+                                    <GradientStop Color="Transparent"
+                                       Offset="1" />
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Image Source="{Binding Pokemon.sprites.front_default}" MaximumHeightRequest="200" MaximumWidthRequest="200"
+                     VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand"/>
+                    </Grid>
+                    <!--NOMBRE-->
+                    <Label Grid.Row="2" FontSize="30" Margin="10" 
+                HorizontalOptions="Center" VerticalOptions="Start" 
+                Text="{Binding Pokemon.name, Mode=OneWay}"/>
+                    <!--PESO ALTURA-->
+                    <Grid Grid.Row="3" Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label Text="Peso" FontSize="16" HorizontalOptions="Center"
+                    TextColor="Gray"
+                    Grid.Column="0" Grid.Row="0"/>
+                        <Label Text="{Binding Pokemon.weight, StringFormat='{0} kg', Converter={converter:UnitConverter}, ConverterParameter=0.1}" FontSize="20" HorizontalOptions="Center"
+Grid.Column="0" Grid.Row="1"/>
+                        <Label Text="Altura" HorizontalOptions="Center"
+                    TextColor="Gray" FontSize="16"
+                    Grid.Column="1" Grid.Row="0"/>
+                        <Label Text="{Binding Pokemon.height, StringFormat='{0} cm', Converter={converter:UnitConverter}, ConverterParameter=10}" FontSize="20" HorizontalOptions="Center"
+                    Grid.Column="1" Grid.Row="1"/>
+                    </Grid>
+                    <!--TIPO-->
+                    <FlexLayout Grid.Row="4" Margin="10"
+                     HorizontalOptions="Center" VerticalOptions="Center">
+                        <Label Text="Tipo:" VerticalOptions="Center"
+                    TextColor="Gray" FontSize="20"/>
+                        <Label Text="{Binding Types, Converter={converter:PokemonTypeJoinConvert}}" FontSize="20" VerticalOptions="Center"/>
+                    </FlexLayout>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Grid x:Name="BackCard" >
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" NumberOfTapsRequired="1"/>
+            </Grid.GestureRecognizers>
+            <Border  
+                StrokeShape="RoundRectangle 20" 
+                HeightRequest="420" WidthRequest="300">
+                <Image Source="card_back.png"/>
+            </Border>
+        </Grid>
+    </Grid>
+</local:BaseContentView>
